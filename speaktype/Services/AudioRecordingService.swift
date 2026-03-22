@@ -351,6 +351,7 @@ class AudioRecordingService: NSObject, ObservableObject {
                 finishGroup.notify(queue: self.audioQueue) {
                     self.isStopping = false
                     self.shouldDiscardCurrentRecordingOutput = false
+                    self.captureSession?.stopRunning()   // ← ADD THIS LINE
                     continuation.resume(returning: finalizedRecordingURL)
                 }
             }
