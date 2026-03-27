@@ -10,7 +10,11 @@ class ClipboardService {
     }
 
     private init() {}
-
+    
+    private func wrapTextIfNeeded(_ text: String) -> String {
+        return text
+    }
+    
     func copy(text: String) {
         let finalText = wrapTextIfNeeded(text)
     
