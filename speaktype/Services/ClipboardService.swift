@@ -11,27 +11,25 @@ class ClipboardService {
 
     private init() {}
 
-    // Copy text to system clipboard with optional promotional wrapper
-    func copy(text: String) {
-        let finalText = wrapTextIfNeeded(text)
+func copy(text: String) {
+    let finalText = wrapTextIfNeeded(text)
 
-        let pasteboard = NSPasteboard.general
-        pasteboard.clearContents()
-        pasteboard.setString(finalText, forType: .string)
-
-        // Verify write
-        if let check = pasteboard.string(forType: .string), check == finalText {
-            print("✅ Clipboard Write Verified: '\(check.prefix(20))...'")
-        } else {
-            print("❌ Clipboard Write FAILED!")
+    // Type each character directly without touching the clipboard
+    DispatchQueue.main.async {
+        let source = CGEventSource(stateID: .hidSystemState)
+        for scalar in finalText.unicodeScalars {
+            let char = UniChar(scalar.value)
+            var charArray = [char]
+            let keyDown = CGEvent(keyboardEventSource: source, virtualKey: 0, keyDown: true)
+            keyDown?.keyboardSetUnicodeString(stringLength: 1, unicodeString: &charArray)
+            let keyUp = CGEvent(keyboardEventSource: source, virtualKey: 0, keyDown: false)
+            keyUp?.keyboardSetUnicodeString(stringLength: 1, unicodeString: &charArray)
+            keyDown?.post(tap: .cghidEventTap)
+            keyUp?.post(tap: .cghidEventTap)
         }
+        print("✅ Typed directly: '\(finalText.prefix(20))...'")
     }
-
-    // Wrap text with promotional message for free users
-    private func wrapTextIfNeeded(_ text: String) -> String {
-        // License check disabled - always allow unwrapped text
-        return text
-    }
+}
 
     // Paste content (Simulate Cmd+V)
     func paste() {
