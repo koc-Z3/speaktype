@@ -139,7 +139,7 @@ struct TranscribeAudioView: View {
                         .buttonStyle(.stSecondary)
                         
                         Button(action: {
-                            ClipboardService.shared.paste()
+                            //ClipboardService.shared.paste()
                         }) {
                             HStack(spacing: 6) {
                                 Image(systemName: "doc.on.clipboard")

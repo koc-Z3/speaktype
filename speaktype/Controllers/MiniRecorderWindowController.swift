@@ -140,7 +140,7 @@ class MiniRecorderWindowController: NSObject {
 
             // 6. Paste using CGEvent (Accessibility permission only)
             await MainActor.run {
-                ClipboardService.shared.paste()
+                //ClipboardService.shared.paste()
             }
         }
     }
