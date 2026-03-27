@@ -11,25 +11,25 @@ class ClipboardService {
 
     private init() {}
 
-func copy(text: String) {
-    let finalText = wrapTextIfNeeded(text)
-
-    // Type each character directly without touching the clipboard
-    DispatchQueue.main.async {
-        let source = CGEventSource(stateID: .hidSystemState)
-        for scalar in finalText.unicodeScalars {
-            let char = UniChar(scalar.value)
-            var charArray = [char]
-            let keyDown = CGEvent(keyboardEventSource: source, virtualKey: 0, keyDown: true)
-            keyDown?.keyboardSetUnicodeString(stringLength: 1, unicodeString: &charArray)
-            let keyUp = CGEvent(keyboardEventSource: source, virtualKey: 0, keyDown: false)
-            keyUp?.keyboardSetUnicodeString(stringLength: 1, unicodeString: &charArray)
-            keyDown?.post(tap: .cghidEventTap)
-            keyUp?.post(tap: .cghidEventTap)
+    func copy(text: String) {
+        let finalText = wrapTextIfNeeded(text)
+    
+        // Type each character directly without touching the clipboard
+        DispatchQueue.main.async {
+            let source = CGEventSource(stateID: .hidSystemState)
+            for scalar in finalText.unicodeScalars {
+                let char = UniChar(scalar.value)
+                var charArray = [char]
+                let keyDown = CGEvent(keyboardEventSource: source, virtualKey: 0, keyDown: true)
+                keyDown?.keyboardSetUnicodeString(stringLength: 1, unicodeString: &charArray)
+                let keyUp = CGEvent(keyboardEventSource: source, virtualKey: 0, keyDown: false)
+                keyUp?.keyboardSetUnicodeString(stringLength: 1, unicodeString: &charArray)
+                keyDown?.post(tap: .cghidEventTap)
+                keyUp?.post(tap: .cghidEventTap)
+            }
+            print("✅ Typed directly: '\(finalText.prefix(20))...'")
         }
-        print("✅ Typed directly: '\(finalText.prefix(20))...'")
     }
-}
 
     // Paste content (Simulate Cmd+V)
     func paste() {
