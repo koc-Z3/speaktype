@@ -51,7 +51,7 @@ Press `fn` to start dictating.
 ### Build from Source
 
 ```bash
-git clone https://github.com/karansinghgit/speaktype.git
+git clone https://github.com/koc-Z3/speaktype-modified-z3.git
 cd speaktype
 make build && make run
 ```
